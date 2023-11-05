@@ -71,3 +71,5 @@ const getPictures = () => Array.from(
   { lenght: PICTURE_COUNT },
   (_, pictureIndex) => createPicture(pictureIndex + 1),
 );
+
+export { getPicture };
