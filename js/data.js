@@ -14,6 +14,7 @@ import {
   PICTURES_COUNT
 } from './constants.js';
 
+
 const generateCommentId = createIdGenerator();
 
 export const createComment = () => ({
