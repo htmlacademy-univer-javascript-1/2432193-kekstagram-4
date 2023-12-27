@@ -25,6 +25,7 @@ export const isPalindrome = (input) => {
   return string === reverseString;
 };
 
+
 export const extractNumbers = (input) => {
   const string = input.toString();
   let result = '';
