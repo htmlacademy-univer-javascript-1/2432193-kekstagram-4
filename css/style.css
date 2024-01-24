@@ -663,8 +663,7 @@ main {
 .text {
   margin: 0;
   padding: 0;
-  margin-bottom: 30px;
-
+ 
   text-align: center;
   border: none;
 }
@@ -673,7 +672,7 @@ main {
   width: 450px;
 
   margin: 0 auto;
-  margin-bottom: 20px;
+
   padding: 5px 10px;
 
   font-family: "Open Sans", "Arial", sans-serif;
