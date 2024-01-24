@@ -1,22 +1,46 @@
-const pictureTemplate = document.querySelector('#picture').content;
-const pictures = document.querySelector('.pictures');
+import { openFullViewPopup } from './full-picture-popup.js';
 
-const createPicture = ({ url, description, likes, comments }) => {
-  const picture = pictureTemplate.cloneNode(true);
+const PICTURE_SELECTOR = '.picture';
+const PICTURES_SELECTOR = '.pictures';
 
-  picture.querySelector('.picture__img').src = url;
-  picture.querySelector('.picture__img').alt = description;
-  picture.querySelector('.picture__likes').textContent = likes;
-  picture.querySelector('.picture__comments').textContent = comments.length;
+let pictures = null;
+const picturesContainerElement = document.querySelector(PICTURES_SELECTOR);
 
-  return picture;
+const createPictureTemplate = ({ id, url, description, likes, comments }) => `
+  <a href="#" data-id="${id}" class="picture">
+    <img class="picture__img" src="${url}" width="182" height="182" alt="${description}">
+    <p class="picture__info">
+      <span class="picture__comments">${comments.length}</span>
+      <span class="picture__likes">${likes}</span>
+    </p>
+  </a>
+`;
+
+const onPicturesContainerClick = (evt) => {
+  const targetElement = evt.target.closest(PICTURE_SELECTOR);
+
+  if (targetElement) {
+    const pictureId = +targetElement.dataset.id;
+    const targetPicture = pictures.filter((picture) => picture.id === pictureId)[0];
+    openFullViewPopup(targetPicture);
+  }
 };
 
 export const renderPictures = (data) => {
-  const picturesFragment = document.createDocumentFragment();
-  data.forEach((pictureData) =>
-    picturesFragment.appendChild(createPicture(pictureData))
-  );
+  document
+    .querySelectorAll(PICTURE_SELECTOR)
+    .forEach((element) => element.remove());
 
-  pictures.appendChild(picturesFragment);
+  pictures = data.slice();
+  if (pictures) {
+    picturesContainerElement.insertAdjacentHTML(
+      'afterbegin',
+      pictures.map((picture) => createPictureTemplate(picture)).join('')
+    );
+
+    picturesContainerElement.addEventListener(
+      'click',
+      onPicturesContainerClick
+    );
+  }
 };
