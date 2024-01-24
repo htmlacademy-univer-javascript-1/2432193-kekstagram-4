@@ -1,39 +1,36 @@
-export const createIdGenerator = () => {
-  let lastGenerateId = 0;
+import { ALERT_SHOW_TIME } from './constants.js';
 
-  return () => {
-    lastGenerateId++;
-    return lastGenerateId;
+export const isEscapeKey = (evt) => evt.key === 'Escape';
+export const isImageFile = (file) => file && file.type.startsWith('image/');
+export const parseNumber = (string) => parseInt(string, 10);
+
+export const showAlert = (message) => {
+  const alertContainerElement = document.createElement('div');
+
+  alertContainerElement.style.zIndex = '100';
+  alertContainerElement.style.position = 'absolute';
+  alertContainerElement.style.left = '0';
+  alertContainerElement.style.top = '0';
+  alertContainerElement.style.right = '0';
+  alertContainerElement.style.margin = '5px 10px';
+  alertContainerElement.style.padding = '10px 3px';
+  alertContainerElement.style.fontSize = '22px';
+  alertContainerElement.style.textAlign = 'center';
+  alertContainerElement.style.backgroundColor = 'red';
+  alertContainerElement.style.borderRadius = '5px';
+
+  alertContainerElement.textContent = message;
+  document.body.append(alertContainerElement);
+
+  setTimeout(() => {
+    alertContainerElement.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export const debounce = (cb, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => cb.apply(this, rest), timeoutDelay);
   };
-};
-
-export const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-};
-
-export const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
-export const checkStringLength = (input, maxLength) => input.length <= maxLength;
-
-export const isPalindrome = (input) => {
-  const string = input.toLowerCase().replaceAll(' ', '');
-  const reverseString = string.split('').reverse().join('');
-  return string === reverseString;
-};
-
-
-export const extractNumbers = (input) => {
-  const string = input.toString();
-  let result = '';
-  for (let i = 0; i < string.length; i++) {
-    const char = string.at(i);
-    if (!isNaN(parseInt(char, 10))) {
-      result += char;
-    }
-  }
-  return result ? +result : NaN;
 };
